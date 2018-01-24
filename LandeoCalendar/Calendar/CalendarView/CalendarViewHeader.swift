@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalendarHeaderView: UIView {
+open class CalendarHeaderView: UIView {
     
     lazy var monthLabel : UILabel = {
         let label = UILabel()
@@ -32,17 +32,16 @@ class CalendarHeaderView: UIView {
             weekdayLabel.textAlignment = NSTextAlignment.center
             containerView.addSubview(weekdayLabel)
         }
-        
         self.addSubview(containerView)
         return containerView
     }()
     
-    override func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         
         var rect = self.bounds
         rect.origin.y += 5.0
-        rect.size.height = 40.0
+        rect.size.height = 40.0        
         self.monthLabel.frame = rect
         
         var labelFrame = CGRect(

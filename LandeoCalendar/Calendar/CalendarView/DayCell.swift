@@ -8,9 +8,7 @@
 
 import UIKit
 
-import UIKit
-
-class DayCell: UICollectionViewCell {
+open class DayCell: UICollectionViewCell {
     
     var selectionColor: UIColor?
     var todayTintColor: UIColor?
@@ -22,7 +20,7 @@ class DayCell: UICollectionViewCell {
     let dotsView = UIView()
     let background = UIView()
     
-    override var description: String {
+    override open var description: String {
         let dayString = self.textLabel.text ?? ""
         return "<DayCell (text:\"\(dayString)\")>"
     }
@@ -51,7 +49,7 @@ class DayCell: UICollectionViewCell {
         self.background.layer.borderWidth = borderWidth
     }
     
-    override var isSelected : Bool {
+    override open var isSelected : Bool {
         didSet {
             if isSelected {
                 setBackgroundBorder(borderColor: CalendarStyle.cellBorderColor, borderWidth: CalendarStyle.cellBorderWidth)
@@ -76,11 +74,11 @@ class DayCell: UICollectionViewCell {
         self.addSubview(self.dotsView)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         var elementsFrame = self.bounds.insetBy(dx: 3.0, dy: 3.0)
         

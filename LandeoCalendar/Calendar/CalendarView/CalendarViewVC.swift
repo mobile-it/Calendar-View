@@ -26,37 +26,8 @@ class CalendarViewVC: UIViewController, CalendarViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.calendarView = CalendarView(frame: .zero)
-        self.okButton = UIButton()
-        self.cancelButton = UIButton()
-        
-        okButton.setTitle("Ok", for: .normal)
-        cancelButton.setTitle("Cancel", for: .normal)
-        
-        okButton.setTitleColor(UIColor.black, for: .normal)
-        cancelButton.setTitleColor(UIColor.black, for: .normal)
-        
-        self.view.addSubview(calendarView)
-        self.view.addSubview(okButton)
-        self.view.addSubview(cancelButton)
-        
-        calendarView.translatesAutoresizingMaskIntoConstraints = false
-        okButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        calendarView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
-        calendarView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -120).isActive = true
-        calendarView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        calendarView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-
-        okButton.topAnchor.constraint(equalTo: calendarView.bottomAnchor, constant: 8).isActive = true
-        okButton.leadingAnchor.constraint(equalTo: calendarView.leadingAnchor).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        
-        cancelButton.topAnchor.constraint(equalTo: self.calendarView.bottomAnchor, constant: 8).isActive = true
-        cancelButton.trailingAnchor.constraint(equalTo: self.calendarView.trailingAnchor).isActive = true
-        cancelButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
-        
+        self.setupUI()
+            
         calendarView.delegate = self
         calendarView.showEkEvents = true
         calendarView.direction = .horizontal
@@ -75,6 +46,43 @@ class CalendarViewVC: UIViewController, CalendarViewDelegate {
         CalendarStyle.cellTodayTextColor = UIColor.white
     }
     
+    func setupUI() {
+        
+        self.calendarView = CalendarView(frame: .zero)
+        self.okButton = UIButton()
+        self.cancelButton = UIButton()
+        
+        okButton.setTitle("Ok", for: .normal)
+        cancelButton.setTitle("Cancel", for: .normal)
+        
+        okButton.setTitleColor(UIColor.black, for: .normal)
+        cancelButton.setTitleColor(UIColor.black, for: .normal)
+        
+        okButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+        
+        self.view.addSubview(calendarView)
+        self.view.addSubview(okButton)
+        self.view.addSubview(cancelButton)
+        
+        calendarView.translatesAutoresizingMaskIntoConstraints = false
+        okButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        calendarView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
+        calendarView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -120).isActive = true
+        calendarView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        calendarView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        
+        okButton.topAnchor.constraint(equalTo: calendarView.bottomAnchor, constant: 8).isActive = true
+        okButton.leadingAnchor.constraint(equalTo: calendarView.leadingAnchor).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        cancelButton.topAnchor.constraint(equalTo: self.calendarView.bottomAnchor, constant: 8).isActive = true
+        cancelButton.trailingAnchor.constraint(equalTo: self.calendarView.trailingAnchor).isActive = true
+        cancelButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
+    }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -90,7 +98,7 @@ class CalendarViewVC: UIViewController, CalendarViewDelegate {
     @objc func handleTap() {
         dismiss(animated: true, completion: nil)
     }
-    
+
     //MARK: - Delegate
     func calendar(_ calendar: CalendarView, didSelectDate date : Date, withEvents events: [CalendarEvent]) {
         print("Did Select: \(date) with \(events.count) events")

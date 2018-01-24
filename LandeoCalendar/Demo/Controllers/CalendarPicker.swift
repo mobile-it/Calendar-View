@@ -24,19 +24,24 @@ class CalendarPicker: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var multipleContainerView: UIView!
     @IBOutlet weak var rangeContainerView: UIView!
+    @IBOutlet weak var dialogContainerView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         containerView.layer.cornerRadius = 10
         multipleContainerView.layer.cornerRadius = 10
         rangeContainerView.layer.cornerRadius = 10
+        dialogContainerView.layer.cornerRadius = 10
     }
     
     @IBAction func testButtonPressed(_ sender: Any) {
         let vc = CalendarViewVC()
-        vc.view.frame.size = UIScreen.main.bounds.size
-        vc.view.backgroundColor = UIColor.green
+        vc.view.superview?.frame.size = CGSize(width: 300, height: 350)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        vc.view.backgroundColor = UIColor.white
         present(vc, animated: true, completion: nil)
+        print("dupex")
     }
     
 }
@@ -44,6 +49,7 @@ class CalendarPicker: UIViewController {
 //MARK: - Presentation section
 
 extension CalendarPicker {
+    
     @IBAction func singleButtonPressed(_ sender: Any) {
         let calendarView = self.storyboard?.instantiateViewController(withIdentifier: "SinglePicker") as! SinglePickerVC
         present(calendarView, animated: true, completion: nil)
@@ -79,7 +85,5 @@ extension CalendarPicker {
         calendarView.modalTransitionStyle = .crossDissolve
         present(calendarView, animated: true, completion: nil)
     }
-    
-    
     
 }

@@ -12,13 +12,12 @@ import EventKit
     /**
         An instance of ALCalendarView, or simply calendarView which
         displays and interacts grid view of Day-Cells.
- 
     */
 
-class CalendarView: UIView {
+public class CalendarView: UIView {
 
-    var delegate : CalendarViewDelegate?
-    var eventsLoader = EventsLoader()
+    public var delegate : CalendarViewDelegate?
+    public var eventsLoader = EventsLoader()
     var calendarModel = CalendarModel()
     
     lazy var calendar : Calendar = {
@@ -33,7 +32,7 @@ class CalendarView: UIView {
         - .vertical
     */
     
-    var direction : UICollectionViewScrollDirection = .horizontal {
+    public var direction : UICollectionViewScrollDirection = .horizontal {
         didSet {
             flowLayout.scrollDirection = direction
             self.collectionView.reloadData()
@@ -45,7 +44,7 @@ class CalendarView: UIView {
         Set true to show dotview under day label on cell representing event
     */
     
-    var showEkEvents : Bool = false {
+    public var showEkEvents : Bool = false {
         didSet {
             if showEkEvents {
                 self.loadEKEvents()
@@ -57,7 +56,7 @@ class CalendarView: UIView {
         Set property as true to highlight today cell
     */
     
-    var showToday: Bool = true {
+    public var showToday: Bool = true {
         didSet {
             self.setCurrentDate(date: today, animated: false)
         }
@@ -79,7 +78,7 @@ class CalendarView: UIView {
         }
     }
     
-    var allowMultipleSelection : Bool = false {
+    public var allowMultipleSelection : Bool = false {
         didSet {
             self.collectionView.allowsMultipleSelection = allowMultipleSelection
         }
@@ -92,11 +91,11 @@ class CalendarView: UIView {
         self.layoutIfNeeded()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         self.setup()
         self.layoutIfNeeded()
@@ -134,7 +133,6 @@ class CalendarView: UIView {
     
     //Setup collectionView properties
     fileprivate func setupCollectionView(layout: CalendarFlowLayout) {
-        
         self.collectionView.isPagingEnabled = true
         self.collectionView.backgroundColor = UIColor.clear
         self.collectionView.showsHorizontalScrollIndicator = false
@@ -145,7 +143,7 @@ class CalendarView: UIView {
     }
     
     //Check collectionView selection type
-    fileprivate func checkSelectionType() {
+    private func checkSelectionType() {
         switch CalendarStyle.cellSelectionType {
         case .single:
             self.collectionView.allowsMultipleSelection = false
@@ -156,7 +154,7 @@ class CalendarView: UIView {
         }
     }
     
-    private func loadEKEvents() {
+    func loadEKEvents() {
         var startDateComponents = DateComponents()
         startDateComponents.year = -2
         guard let startDate = self.calendar.date(byAdding: startDateComponents, to: today) else { return }
@@ -176,34 +174,9 @@ class CalendarView: UIView {
     fileprivate var flowLayout: CalendarFlowLayout {
         return self.collectionView.collectionViewLayout as! CalendarFlowLayout
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.headerView.frame = CGRect( x:0.0, y:0.0, width: self.frame.size.width,height: CalendarStyle.headerHeight)
-        self.collectionView.frame = CGRect(x: 0.0, y: CalendarStyle.headerHeight, width: self.frame.size.width, height: self.frame.size.height - CalendarStyle.headerHeight)
-        flowLayout.itemSize = self.cellSize(in: self.bounds)
-        
-        self.resetCurrentDate()
-        guard let current = currentDate else { return }
-        self.setCurrentDate(date: current)
-    }
-    
-    private func cellSize(in bounds: CGRect) -> CGSize {
-        return CGSize(width: frame.size.width / 7.0, height: (frame.size.height - CalendarStyle.headerHeight) / 6.0)
-    }
 
-    func reloadData() {
-        self.collectionView.reloadData()
-    }
-    
-    func setCurrentDate(date: Date, animated: Bool = false) {
-        guard (date > calendarModel.startDate) && (date < calendarModel.endDate) else { return }
-        
-        self.collectionView.setContentOffset(
-            self.scrollViewOffset(for: date),
-            animated: false
-        )
-        self.displayDateOnHeader(date)
+    fileprivate func cellSize(in bounds: CGRect) -> CGSize {
+        return CGSize(width: frame.size.width / 7.0, height: (frame.size.height - CalendarStyle.headerHeight) / 6.0)
     }
     
     fileprivate func resetCurrentDate() {
@@ -248,5 +221,35 @@ class CalendarView: UIView {
         dateComponents.year = 10
         guard let endDate = self.calendar.date(byAdding: dateComponents, to: today) else { return }
         calendarModel.endDate = endDate
+    }
+}
+
+//Public methods
+
+extension CalendarView {
+    
+    public func reloadData() {
+        self.collectionView.reloadData()
+    }
+    
+    public func setCurrentDate(date: Date, animated: Bool = false) {
+        guard (date > calendarModel.startDate) && (date < calendarModel.endDate) else { return }
+        
+        self.collectionView.setContentOffset(
+            self.scrollViewOffset(for: date),
+            animated: false
+        )
+        self.displayDateOnHeader(date)
+    }
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        self.headerView.frame = CGRect( x:0.0, y:0.0, width: self.frame.size.width,height: CalendarStyle.headerHeight)
+        self.collectionView.frame = CGRect(x: 0.0, y: CalendarStyle.headerHeight, width: self.frame.size.width, height: self.frame.size.height - CalendarStyle.headerHeight)
+        flowLayout.itemSize = self.cellSize(in: self.bounds)
+        
+        self.resetCurrentDate()
+        guard let current = currentDate else { return }
+        self.setCurrentDate(date: current)
     }
 }

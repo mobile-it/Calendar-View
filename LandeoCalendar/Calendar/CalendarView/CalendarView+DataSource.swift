@@ -10,7 +10,7 @@ import UIKit
 
 extension CalendarView: UICollectionViewDataSource {
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         guard calendarModel.startDate <= calendarModel.endDate else { return 0 }
         calendarModel.monthFirstDay = self.calendar.firstDayOfMonth(from: calendarModel.startDate)
         
@@ -30,7 +30,7 @@ extension CalendarView: UICollectionViewDataSource {
         return (firstDay: firstWeekdayOfMonthIndex, daysTotal: numberOfDaysInMonth)
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var monthOffsetComponents = DateComponents()
         monthOffsetComponents.month = section
         
@@ -41,7 +41,7 @@ extension CalendarView: UICollectionViewDataSource {
         return 42
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: DayCell_ID, for: indexPath) as? DayCell else { return DayCell() }
         guard let (firstDayIndex, numberOfDaysTotal) = calendarModel.monthInfoForSection[indexPath.section] else { return dayCell }
         let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - firstDayIndex, section: indexPath.section)
