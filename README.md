@@ -4,6 +4,8 @@
 <img src="https://user-images.githubusercontent.com/32479017/34562758-0797c782-f150-11e7-9caa-aa15d0a4862e.png">
 </p>
 
+100% Swift 4.0 ! 
+
  Simple, customizable calendar for your app!
 
 
